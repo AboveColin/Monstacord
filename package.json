@@ -5,8 +5,6 @@
   "main": "index.js",
   "scripts": {
     "test": "test",
-    "start": "node .",
-    "lint": "eslint ."
   },
   "repository": {
     "type": "git",
