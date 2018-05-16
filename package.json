@@ -1,0 +1,27 @@
+{
+  "name": "monstacord",
+  "version": "1.0.0",
+  "description": "Pokemon Bot ",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Silent-Trainer/PokeNet-Bot.git"
+  },
+  "keywords": [
+    "pokemon",
+    "pokecord"
+  ],
+  "author": "Silent-Trainers",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Silent-Trainer/PokeNet-Bot/issues"
+  },
+  "homepage": "https://github.com/Silent-Trainer/PokeNet-Bot#readme",
+  "dependencies": {
+    "discord.js": "^11.3.2",
+    "snekfetch": "^4.0.0"
+  }
+}
