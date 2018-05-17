@@ -4,7 +4,7 @@
   "description": "Pokemon Bot ",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "test": "test",
   },
   "repository": {
     "type": "git",
