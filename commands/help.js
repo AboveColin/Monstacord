@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 
 module.exports = {
     name: 'help',
-    description: 'Get info on how to obtain your first pokemon',
+    description: 'Shows All Commands',
     cooldown: 5,
     execute(message) {
       const exampleEmbed = new Discord.RichEmbed()
