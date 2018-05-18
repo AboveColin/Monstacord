@@ -1,11 +1,11 @@
 const Discord = require('discord.js');
 
 module.exports = {
-	name: 'help',
-	description: 'Get info on how to obtain your first pokemon',
-	cooldown: 5,
-	execute(message) {
-		  const exampleEmbed = new Discord.RichEmbed()
+    name: 'help',
+    description: 'Get info on how to obtain your first pokemon',
+    cooldown: 5,
+    execute(message) {
+      const exampleEmbed = new Discord.RichEmbed()
       .setColor('#0099ff')
       .setTitle('Help')
       .setURL('https://discord.gg/jjw8n82')
