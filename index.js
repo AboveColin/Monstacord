@@ -6,6 +6,7 @@ const snekfetch = require('snekfetch');
 let points = JSON.parse(fs.readFileSync("./points.json", "utf8"));
 
 const client = new Discord.Client();
+const sql = require("sqlite");
 client.commands = new Discord.Collection();
 
 const commandFiles = fs.readdirSync('./commands');
@@ -18,10 +19,16 @@ for (const file of commandFiles) {
 const cooldowns = new Discord.Collection();
 
 client.on('ready', () => {
-	console.log('Ready!');
+	client.generateInvite([])
+
+    .then(link => {
+
+      console.log(`\nInvite link with no permissions: ${link}`)
+
+    })
 });
 
-client.on('message', message => {
+client.on('message', async message => {
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
 
 	const args = message.content.slice(prefix.length).split(/ +/);
@@ -99,5 +106,20 @@ client.on('message', message => {
     });
 
 });
+
+client.on('guildMemberAdd', member => {
+  const channel = member.guild.channels.find('name', 'member-log');
+  
+  if (!channel) return;
+  
+  channel.send(`Welcome to the server, ${member}`);
+
+});
+
+// Create a new webhook
+const hook = new Discord.WebhookClient('446787674981007391', '3AlOQNV4cA-XReoMwY6GkWkoiawTX__Qtyz4NYK90GSH82Nu5JWcljwCiH3uqM9PtKWj');
+
+// Send a message using the webhook
+hook.send('**__COMMANDS__**\n\n```+ping\n+beep\n+help\n+info```\nMonstacord is here!');
 
 client.login(token);
