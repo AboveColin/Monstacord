@@ -1,7 +1,7 @@
 module.exports = {
 	name: 'choose',
 	description: 'Choose A Starter Pokemon',
-	cooldown: 10,
+	cooldown: 5,
 	execute(message, args) {
 		if (args[0] === 'bulbasaur') {
 			return message.channel.send(`Good Choice ${message.author}! Bulbasaur is now your first Pokemon!`);
