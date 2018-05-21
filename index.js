@@ -120,6 +120,6 @@ client.on('guildMemberAdd', member => {
 const hook = new Discord.WebhookClient('446787674981007391', '3AlOQNV4cA-XReoMwY6GkWkoiawTX__Qtyz4NYK90GSH82Nu5JWcljwCiH3uqM9PtKWj');
 
 // Send a message using the webhook
-hook.send('**__COMMANDS__**\n\n```+ping\n+beep\n+help\n+info```\nMonstacord is here!');
+hook.send('`Guess Who\'s Back!! It\'s Monstacord!!`');
 
 client.login(token);
