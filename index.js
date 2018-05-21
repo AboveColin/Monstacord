@@ -6,7 +6,7 @@ const snekfetch = require('snekfetch');
 let points = JSON.parse(fs.readFileSync("./points.json", "utf8"));
 
 const client = new Discord.Client();
-const sql = require("sqlite");
+const sql = require("sqlite3");
 client.commands = new Discord.Collection();
 
 const commandFiles = fs.readdirSync('./commands');

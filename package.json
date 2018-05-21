@@ -22,6 +22,7 @@
   "homepage": "https://github.com/Silent-Trainer/PokeNet-Bot#readme",
   "dependencies": {
     "discord.js": "^11.3.2",
-    "snekfetch": "^4.0.0"
+    "snekfetch": "^4.0.0",
+    "sqlite3": "^4.0.0"
   }
 }
