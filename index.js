@@ -48,6 +48,29 @@ client.on('ready', () => {
 });
 
 client.on('message', async message => {
+	db.all("SELECT points FROM users WHERE discord_ID='" + message.author.id + "';",function(err,rows){
+		if(err){
+			console.log(err);
+		}else if(rows != undefined && rows[0] != undefined){
+       		var authorPoints = rows[0].points;
+    		let curLevel = Math.floor(0.1 * Math.sqrt(authorPoints));
+			authorPoints++;
+    		let newLevel = Math.floor(0.1 * Math.sqrt(authorPoints));
+    		if (curLevel > newLevel) {
+      			message.reply(`You"ve leveled up to level **${curLevel}**! Ain"t that dandy?`);
+    		}
+		    if (message.content.startsWith(prefix + "level")) {
+      			message.reply(`You are currently level ${newLevel}, with ${authorPoints} points.`);
+    		}
+		}else{
+       		var stmt = db.prepare("INSERT INTO users VALUES (?,0,?);");
+  			stmt.run(message.author.id, new Date().valueOf());
+  			stmt.finalize();
+       	}
+       
+	});
+	
+    db.run("UPDATE users SET points = points + 1 WHERE discord_ID='" + message.author.id + "';");
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
 
 	const args = message.content.slice(prefix.length).split(/ +/);
@@ -103,31 +126,6 @@ client.on('message', async message => {
 		console.error(error);
 		message.reply('there was an error trying to execute that command!');
 	}
-	var authorPoints = -1;
-	db.all("SELECT points FROM users WHERE discord_ID='" + message.author.id + "';",function(err,rows){
-		if(err){
-			console.log(err);
-		}else if(rows != undefined){
-       		authorPoints = rows[0].points;
-    		let curLevel = Math.floor(0.1 * Math.sqrt(authorPoints));
-			authorPoints++;
-    		let newLevel = Math.floor(0.1 * Math.sqrt(authorPoints));
-    		if (curLevel > newLevel) {
-      			message.reply(`You"ve leveled up to level **${curLevel}**! Ain"t that dandy?`);
-    		}
-		}else{
-       		var stmt = db.prepare("INSERT INTO users VALUES (?,0,?);");
-  			stmt.run(message.author.id, new Date().valueOf());
-  			stmt.finalize();
-       	}
-       
-	});
-    
-
-    if (message.content.startsWith(prefix + "level")) {
-      message.reply(`You are currently level ${newLevel}, with ${authorPoints} points.`);
-    }
-    db.run("UPDATE users SET points = points + 1 WHERE discord_ID='" + message.author.id + "';");
 
 });
 
