@@ -91,6 +91,6 @@ module.exports = {
 			return message.channel.send(`Good Choice ${message.author}! Popplio is now your first Pokemon!`);
 		}
 
-		message.channel.send(`First argument: ${args[0]}`);
+		message.channel.send(`${message.author} You must pick a Pokemon to be your starter.`);
 	},
 };
