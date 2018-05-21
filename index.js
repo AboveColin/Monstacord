@@ -104,26 +104,25 @@ client.on('message', async message => {
 		message.reply('there was an error trying to execute that command!');
 	}
 	var authorPoints = -1;
-	db.get("SELECT points FROM users WHERE discord_ID='" + message.author.id + "';", function(err, row) {
+	db.all("SELECT points FROM users WHERE discord_ID='" + message.author.id + "';",function(err,rows){
 		if(err){
 			console.log(err);
-		}else if(row != undefined){
-       		authorPoints = row.points;
-       }
-    });
-    if(authorPoints < 0){
-    	var stmt = db.prepare("INSERT INTO users VALUES (?,0,?);");
-  		stmt.run(message.author.id, new Date().valueOf());
-  		stmt.finalize();
-    }
-    let curLevel = Math.floor(0.1 * Math.sqrt(authorPoints));
-	authorPoints++;
-
-    let newLevel = Math.floor(0.1 * Math.sqrt(authorPoints));
-    if (curLevel > newLevel) {
-      // Level up!
-      message.reply(`You"ve leveled up to level **${curLevel}**! Ain"t that dandy?`);
-    }
+		}else if(rows != undefined){
+       		authorPoints = rows[0].points;
+    		let curLevel = Math.floor(0.1 * Math.sqrt(authorPoints));
+			authorPoints++;
+    		let newLevel = Math.floor(0.1 * Math.sqrt(authorPoints));
+    		if (curLevel > newLevel) {
+      			message.reply(`You"ve leveled up to level **${curLevel}**! Ain"t that dandy?`);
+    		}
+		}else{
+       		var stmt = db.prepare("INSERT INTO users VALUES (?,0,?);");
+  			stmt.run(message.author.id, new Date().valueOf());
+  			stmt.finalize();
+       	}
+       
+	});
+    
 
     if (message.content.startsWith(prefix + "level")) {
       message.reply(`You are currently level ${newLevel}, with ${authorPoints} points.`);
