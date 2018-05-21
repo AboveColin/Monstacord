@@ -1,7 +1,7 @@
 module.exports = {
 	name: 'purge',
 	description: 'Delete up to 99 messages at a time.',
-	execute(message, args) {
+	execute(message, args, db) {
 		const amount = parseInt(args[0]) + 1;
 
 		if (isNaN(amount)) {

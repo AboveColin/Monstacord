@@ -4,7 +4,7 @@ module.exports = {
 	name: 'help',
 	description: 'Get info on how to obtain your first pokemon',
 	cooldown: 5,
-	execute(message) {
+	execute(message, args, db) {
 	  const exampleEmbed = new Discord.RichEmbed()
       .setColor('#0099ff')
       .setTitle('Help')

@@ -3,7 +3,7 @@ const Discord = require('discord.js');
 module.exports = {
 	name: 'botinfo',
 	description: 'Display info about yourself.',
-	execute(message) {
+	execute(message, args, db) {
 		const exampleEmbed = new Discord.RichEmbed()
 	    .setColor('#0099ff')
 	    .setTitle('Monstacord')

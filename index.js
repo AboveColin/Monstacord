@@ -1,12 +1,31 @@
 const fs = require('fs');
 const Discord = require('discord.js');
 const { prefix, token } = require('./config.json');
-const snekfetch = require('snekfetch');
-
-let points = JSON.parse(fs.readFileSync("./points.json", "utf8"));
 
 const client = new Discord.Client();
 const sql = require("sqlite3");
+var db = new sql.Database('mc.sqlite');
+
+db.serialize(function() {
+  db.run("CREATE TABLE IF NOT EXISTS `users`( `discord_ID` TEXT NOT NULL UNIQUE, `points` INTEGER NOT NULL DEFAULT 0, `last_interaction` NUMERIC DEFAULT 0, PRIMARY KEY(`discord_ID`));");
+  db.run("CREATE TABLE IF NOT EXISTS `user_monsters` ( `ID` INTEGER PRIMARY KEY AUTOINCREMENT, `user_id` INTEGER NOT NULL, `level` INTEGER NOT NULL DEFAULT 1, FOREIGN KEY(`user_id`) REFERENCES `users`(`discord_ID`) );");
+  db.run("CREATE TABLE IF NOT EXISTS `monsters` ( `ID` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT NOT NULL, `stats` INTEGER NOT NULL );");
+
+  // var stmt = db.prepare("INSERT INTO user VALUES (?,?)");
+//   for (var i = 0; i < 10; i++) {
+//   
+//   var d = new Date();
+//   var n = d.toLocaleTimeString();
+//   stmt.run(i, n);
+//   }
+//   stmt.finalize();
+// 
+//   db.each("SELECT id, dt FROM user", function(err, row) {
+//       console.log("User id : "+row.id, row.dt);
+//   });
+});
+
+//db.close();
 client.commands = new Discord.Collection();
 
 const commandFiles = fs.readdirSync('./commands');
@@ -78,32 +97,38 @@ client.on('message', async message => {
 	}
 
 	try {
-		command.execute(message, args);
+		command.execute(message, args, db);
 	}
 	catch (error) {
 		console.error(error);
 		message.reply('there was an error trying to execute that command!');
 	}
-	if (!points[message.author.id]) points[message.author.id] = {
-    points: 0,
-    level: 0
-    };
-    let userData = points[message.author.id];
-    userData.points++;
+	var authorPoints = -1;
+	db.get("SELECT points FROM users WHERE discord_ID='" + message.author.id + "';", function(err, row) {
+		if(err){
+			console.log(err);
+		}else if(row != undefined){
+       		authorPoints = row.points;
+       }
+    });
+    if(authorPoints < 0){
+    	var stmt = db.prepare("INSERT INTO users VALUES (?,0,?);");
+  		stmt.run(message.author.id, new Date().valueOf());
+  		stmt.finalize();
+    }
+    let curLevel = Math.floor(0.1 * Math.sqrt(authorPoints));
+	authorPoints++;
 
-    let curLevel = Math.floor(0.1 * Math.sqrt(userData.points));
-    if (curLevel > userData.level) {
+    let newLevel = Math.floor(0.1 * Math.sqrt(authorPoints));
+    if (curLevel > newLevel) {
       // Level up!
-      userData.level = curLevel;
       message.reply(`You"ve leveled up to level **${curLevel}**! Ain"t that dandy?`);
     }
 
     if (message.content.startsWith(prefix + "level")) {
-      message.reply(`You are currently level ${userData.level}, with ${userData.points} points.`);
+      message.reply(`You are currently level ${newLevel}, with ${authorPoints} points.`);
     }
-    fs.writeFile("./points.json", JSON.stringify(points), (err) => {
-      if (err) console.error(err)
-    });
+    db.run("UPDATE users SET points = points + 1 WHERE discord_ID='" + message.author.id + "';");
 
 });
 
