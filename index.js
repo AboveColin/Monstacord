@@ -56,7 +56,7 @@ client.on('message', async message => {
 			authorPoints++;
     		let newLevel = Math.floor(0.1 * Math.sqrt(authorPoints));
     		if (newLevel > curLevel) {
-      			message.reply(`You"ve leveled up to level **${curLevel}**! Ain"t that dandy?`);
+      			message.reply(`You"ve leveled up to level **${newLevel}**! Ain"t that dandy?`);
     		}
 		    if (message.content.startsWith(prefix + "level")) {
       			message.reply(`You are currently level ${newLevel}, with ${authorPoints} points.`);
