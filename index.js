@@ -9,7 +9,7 @@ var db = new sql.Database('mc.sqlite');
 db.serialize(function() {
   db.run("CREATE TABLE IF NOT EXISTS `users`( `discord_ID` TEXT NOT NULL UNIQUE, `points` INTEGER NOT NULL DEFAULT 0, `last_interaction` NUMERIC DEFAULT 0, `caught_starter` INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(`discord_ID`));");
   db.run("CREATE TABLE IF NOT EXISTS `user_monsters` ( `ID` INTEGER PRIMARY KEY AUTOINCREMENT, `user_id` INTEGER NOT NULL, `monster_id` INTEGER NOT NULL,`exp` INTEGER NOT NULL DEFAULT 1, `iv` NUMERIC NOT NULL, `shiny` INTEGER NOT NULL DEFAULT 0, FOREIGN KEY(`user_id`) REFERENCES `users`(`discord_ID`), FOREIGN KEY(`monster_id`) REFERENCES `monsters`(`ID`) );");
-  db.run("CREATE TABLE IF NOT EXISTS `monsters` ( `ID` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT NOT NULL, `catch_rate` NUMERIC NOT NULL DEFAULT 1, `flee_rate` NUMERIC NOT NULL DEFAULT 0, `is_starter` INTEGER NOT NULL DEFAULT 0);");
+  db.run("CREATE TABLE IF NOT EXISTS `monsters` ( `ID` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT NOT NULL, `description` TEXT, `catch_rate` NUMERIC NOT NULL DEFAULT 1, `flee_rate` NUMERIC NOT NULL DEFAULT 0, `is_starter` INTEGER NOT NULL DEFAULT 0);");
   // var stmt = db.prepare("INSERT INTO user VALUES (?,?)");
 //   for (var i = 0; i < 10; i++) {
 //   
