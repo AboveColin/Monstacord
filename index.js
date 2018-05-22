@@ -69,7 +69,7 @@ client.on('message', async message => {
        
 	});
 	
-    db.run("UPDATE users SET points = points + 1 WHERE discord_ID='" + message.author.id + "';");
+    db.run("UPDATE users SET last_interaction = '" + new Date().valueOf() + "', points = points + 1 WHERE discord_ID='" + message.author.id + "';");
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
 
 	const args = message.content.slice(prefix.length).split(/ +/);
